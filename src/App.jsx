@@ -6,11 +6,6 @@ import options from "./ChartOptions";
 import filterData from "./filterData";
 import FilterForm from "./filterform";
 import getFilterOptions from "./getFilterOptions";
-
-// Il faudrait faire que les requêtes disponibles collent à la page sélectionnée
-// Nickel.
-// Maintenant, serait-il possible de faire qu'à côté du canva soient affichées les données des requêtes sélectionnées dans un tableau ?
-
 import "./App.css";
 import {
   Chart as ChartJS,
@@ -42,12 +37,15 @@ function App() {
   const [minPageImpressions, setMinPageImpressions] = useState(0);
   const [categoryFilter, setCategoryFilter] = React.useState("");
   const [typeFilter, setTypeFilter] = React.useState("");
+  const [startWeek, setStartWeek] = React.useState(1);
+  const [endWeek, setEndWeek] = React.useState(52);
   const [filterOptions, setFilterOptions] = React.useState({
     queryOptions: [],
     pageOptions: [],
     categories: {},
     types: {},
   });
+
   React.useEffect(() => {
     fetchCsvData().then((csvData) => {
       const filteredData = filterData(
@@ -58,8 +56,21 @@ function App() {
         typeFilter
       );
       const preparedData = prepareData(filteredData);
-      const formattedData = formatData(preparedData);
-      setChartData(formattedData);
+      let formattedData = formatData(preparedData);
+
+      // Slice the data based on the week range
+      const displayedWeeks = formattedData.labels.slice(startWeek - 1, endWeek);
+      const displayedDatasets = formattedData.datasets.map((dataset) => ({
+        ...dataset,
+        data: dataset.data.slice(startWeek - 1, endWeek),
+      }));
+
+      // Update the chart data with the sliced data
+      setChartData({
+        labels: displayedWeeks,
+        datasets: displayedDatasets,
+      });
+
       setFilterOptions(
         getFilterOptions(csvData, minQueryImpressions, minPageImpressions)
       );
@@ -71,6 +82,8 @@ function App() {
     typeFilter,
     minQueryImpressions,
     minPageImpressions,
+    startWeek,
+    endWeek,
   ]);
 
   if (!chartData) {
@@ -93,6 +106,10 @@ function App() {
         typeFilter={typeFilter}
         setTypeFilter={setTypeFilter}
         filterOptions={filterOptions}
+        startWeek={startWeek}
+        endWeek={endWeek}
+        setStartWeek={setStartWeek}
+        setEndWeek={setEndWeek}
       />
       <div id="chartDiv">
         {chartData ? (

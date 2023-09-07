@@ -48,7 +48,10 @@ function prepareData(csvData) {
 
   const clicks = weeks.map((week) => clicksPerWeek[week] ?? 0);
   const impressions = weeks.map((week) => impressionsPerWeek[week] ?? 0);
-  const positions = weeks.map((week) => (positionPerWeek[week] ?? 0) / (positionCountPerWeek[week] ?? 1) || 100); // Ici, si aucune position n'est enregistrée pour la semaine, nous renvoyons 100 par défaut.
+  const positions = weeks.map(
+    (week) =>
+      (positionPerWeek[week] ?? 0) / (positionCountPerWeek[week] ?? 1) || 100
+  ); // Ici, si aucune position n'est enregistrée pour la semaine, nous renvoyons 100 par défaut.
 
   return { weeks, clicks, impressions, positions };
 }
