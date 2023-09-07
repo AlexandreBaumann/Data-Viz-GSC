@@ -7,7 +7,7 @@ function getFilterOptions(csvData, minQueryImpressions, minPageImpressions) {
   csvData.forEach((row) => {
     const query = row.Query;
     const page = row.Page;
-    const category = row.Category;
+    const category = row.Cat1;
     const type = row.Type;
     const impressions = parseFloat(row.Impressions);
 
@@ -26,23 +26,28 @@ function getFilterOptions(csvData, minQueryImpressions, minPageImpressions) {
     if (category && !categories[category]) {
       categories[category] = true;
     }
-    
+
     if (type && !types[type]) {
       types[type] = true;
     }
   });
 
   const queryOptions = Object.keys(queryImpressions)
-    .filter(query => queryImpressions[query] >= minQueryImpressions)
+    .filter((query) => queryImpressions[query] >= minQueryImpressions)
     .sort();
 
   const pageOptions = Object.keys(pageImpressions)
-    .filter(page => pageImpressions[page] >= minPageImpressions)
+    .filter((page) => pageImpressions[page] >= minPageImpressions)
     .sort();
 
-    const filterOptions = { queryOptions, pageOptions, categories: Object.keys(categories), types: Object.keys(types) };
-    console.log(filterOptions); // Ici
-  
-    return filterOptions;
-  }
+  const filterOptions = {
+    queryOptions,
+    pageOptions,
+    categories: Object.keys(categories),
+    types: Object.keys(types),
+  };
+  console.log(filterOptions); // Ici
+
+  return filterOptions;
+}
 export default getFilterOptions;

@@ -30,23 +30,23 @@ ChartJS.register(
 );
 
 function App() {
-  const [chartData, setChartData] = React.useState(null);
-  const [pageFilter, setPageFilter] = React.useState("");
-  const [queryFilter, setQueryFilter] = React.useState("");
+  const [chartData, setChartData] = useState(null);
+  const [pageFilter, setPageFilter] = useState("");
+  const [queryFilter, setQueryFilter] = useState("");
   const [minQueryImpressions, setMinQueryImpressions] = useState(0);
   const [minPageImpressions, setMinPageImpressions] = useState(0);
-  const [categoryFilter, setCategoryFilter] = React.useState("");
-  const [typeFilter, setTypeFilter] = React.useState("");
-  const [startWeek, setStartWeek] = React.useState(1);
-  const [endWeek, setEndWeek] = React.useState(52);
-  const [filterOptions, setFilterOptions] = React.useState({
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
+  const [startWeek, setStartWeek] = useState(1);
+  const [endWeek, setEndWeek] = useState(52);
+  const [filterOptions, setFilterOptions] = useState({
     queryOptions: [],
     pageOptions: [],
     categories: {},
     types: {},
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchCsvData().then((csvData) => {
       const filteredData = filterData(
         csvData,

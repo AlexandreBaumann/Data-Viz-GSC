@@ -11,7 +11,7 @@ function prepareData(csvData) {
     const clicks = parseFloat(row.Clicks);
     const impressions = parseFloat(row.Impressions);
     const position = parseFloat(row.Position);
-    const category = row.Category; // Ajouté
+    const category = row.Cat1; // Ajouté
     const type = row.Type; // Ajouté
 
     if (week && !isNaN(clicks)) {
