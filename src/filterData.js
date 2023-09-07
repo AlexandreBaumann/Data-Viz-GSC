@@ -1,11 +1,11 @@
 function filterData(
-  csvData,
+  reduxData,
   queryFilter,
   pageFilter,
   categoryFilter,
   typeFilter
 ) {
-  return csvData.filter((row) => {
+  return reduxData.filter((row) => {
     if (
       !row ||
       typeof row.Query === "undefined" ||

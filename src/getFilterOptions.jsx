@@ -7,7 +7,7 @@ function getFilterOptions(csvData, minQueryImpressions, minPageImpressions) {
   csvData.forEach((row) => {
     const query = row.Query;
     const page = row.Page;
-    const category = row.Cat1;
+    const category = row.Category;
     const type = row.Type;
     const impressions = parseFloat(row.Impressions);
 

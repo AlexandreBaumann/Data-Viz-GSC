@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import fetchCsvData from "./CsvDataFetcher";
 import prepareData from "./ChartDataPreparer";
 import formatData from "./ChartDataFormatter";
 import options from "./ChartOptions";
 import filterData from "./filterData";
 import FilterForm from "./filterform";
 import getFilterOptions from "./getFilterOptions";
+import { useSelector } from "react-redux";
+
 import "./App.css";
 import {
   Chart as ChartJS,
@@ -45,45 +46,30 @@ function App() {
     categories: {},
     types: {},
   });
+  const reduxData = useSelector((state) => state.csvData);
 
   useEffect(() => {
-    fetchCsvData().then((csvData) => {
-      const filteredData = filterData(
-        csvData,
-        queryFilter,
-        pageFilter,
-        categoryFilter,
-        typeFilter
-      );
-      const preparedData = prepareData(filteredData);
-      let formattedData = formatData(preparedData);
-
-      // Slice the data based on the week range
-      const displayedWeeks = formattedData.labels.slice(startWeek - 1, endWeek);
-      const displayedDatasets = formattedData.datasets.map((dataset) => ({
-        ...dataset,
-        data: dataset.data.slice(startWeek - 1, endWeek),
-      }));
-
-      // Update the chart data with the sliced data
-      setChartData({
-        labels: displayedWeeks,
-        datasets: displayedDatasets,
-      });
-
-      setFilterOptions(
-        getFilterOptions(csvData, minQueryImpressions, minPageImpressions)
-      );
-    });
+    const filteredData = filterData(
+      reduxData,
+      queryFilter,
+      pageFilter,
+      categoryFilter,
+      typeFilter
+    );
+    const preparedData = prepareData(filteredData);
+    const formattedData = formatData(preparedData);
+    setChartData(formattedData);
+    setFilterOptions(
+      getFilterOptions(reduxData, minQueryImpressions, minPageImpressions)
+    );
   }, [
+    reduxData,
     queryFilter,
     pageFilter,
     categoryFilter,
     typeFilter,
     minQueryImpressions,
     minPageImpressions,
-    startWeek,
-    endWeek,
   ]);
 
   if (!chartData) {
