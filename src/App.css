@@ -1,0 +1,17 @@
+.App {
+  text-align: center;
+}
+
+.filtres {
+  display: flex;
+  flex-direction: column;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.chartDiv {
+  height: 400px;
+  width: 1200px;
+}
