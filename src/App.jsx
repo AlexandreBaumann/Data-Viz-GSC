@@ -5,7 +5,19 @@ import options from "./ChartOptions";
 import filterData from "./filterData";
 import FilterForm from "./filterform";
 import getFilterOptions from "./getFilterOptions";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setPageFilter,
+  setQueryFilter,
+  setCategoryFilter,
+  setTypeFilter,
+  setMinQueryImpressions,
+  setMinPageImpressions,
+} from "./redux/filterSlice";
+import {
+  selectQueriesForPage,
+  selectPagesForQuery,
+} from "./redux/filterSelector";
 
 import "./App.css";
 import {
@@ -32,12 +44,6 @@ ChartJS.register(
 
 function App() {
   const [chartData, setChartData] = useState(null);
-  const [pageFilter, setPageFilter] = useState("");
-  const [queryFilter, setQueryFilter] = useState("");
-  const [minQueryImpressions, setMinQueryImpressions] = useState(0);
-  const [minPageImpressions, setMinPageImpressions] = useState(0);
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
   const [startWeek, setStartWeek] = useState(1);
   const [endWeek, setEndWeek] = useState(52);
   const [filterOptions, setFilterOptions] = useState({
@@ -46,8 +52,27 @@ function App() {
     categories: {},
     types: {},
   });
-  const reduxData = useSelector((state) => state.csvData);
 
+  ///////////////
+  const dispatch = useDispatch();
+  const reduxData = useSelector((state) => state.csvData);
+  const filters = useSelector((state) => state.filter) || {};
+  const categoryFilter = useSelector((state) => state.filter.categoryFilter);
+  const typeFilter = useSelector((state) => state.filter.typeFilter);
+  const minQueryImpressions = useSelector(
+    (state) => state.filter.minQueryImpressions
+  );
+  const minPageImpressions = useSelector(
+    (state) => state.filter.minPageImpressions
+  );
+
+  const pageFilter = filters.pageFilter;
+  const queryFilter = filters.queryFilter;
+  ///////////////
+  const availableQueries = useSelector(selectQueriesForPage);
+  const availablePages = useSelector(selectPagesForQuery);
+
+  ///////////////
   useEffect(() => {
     const filteredData = filterData(
       reduxData,
@@ -79,18 +104,24 @@ function App() {
   return (
     <div className="App">
       <FilterForm
+        availablePages={availablePages}
+        availableQueries={availableQueries}
         queryFilter={queryFilter}
         pageFilter={pageFilter}
-        setQueryFilter={setQueryFilter}
-        setPageFilter={setPageFilter}
+        setQueryFilter={(value) => dispatch(setQueryFilter(value))}
+        setPageFilter={(value) => dispatch(setPageFilter(value))}
         minQueryImpressions={minQueryImpressions}
-        setMinQueryImpressions={setMinQueryImpressions}
+        setMinQueryImpressions={(value) =>
+          dispatch(setMinQueryImpressions(value))
+        }
         minPageImpressions={minPageImpressions}
-        setMinPageImpressions={setMinPageImpressions}
+        setMinPageImpressions={(value) =>
+          dispatch(setMinPageImpressions(value))
+        }
         categoryFilter={categoryFilter}
-        setCategoryFilter={setCategoryFilter}
+        setCategoryFilter={(value) => dispatch(setCategoryFilter(value))}
         typeFilter={typeFilter}
-        setTypeFilter={setTypeFilter}
+        setTypeFilter={(value) => dispatch(setTypeFilter(value))}
         filterOptions={filterOptions}
         startWeek={startWeek}
         endWeek={endWeek}

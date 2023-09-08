@@ -1,4 +1,6 @@
 const FilterForm = ({
+  availablePages,
+  availableQueries,
   queryFilter,
   pageFilter,
   setQueryFilter,
@@ -42,11 +44,17 @@ const FilterForm = ({
           onChange={(e) => setQueryFilter(e.target.value)}
         >
           <option value="">None</option>
-          {filterOptions.queryOptions.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
+          {availableQueries.length > 0
+            ? availableQueries.map((query, index) => (
+                <option key={index} value={query}>
+                  {query}
+                </option>
+              ))
+            : filterOptions.queryOptions.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
         </select>
       </label>
       <label>
@@ -56,11 +64,17 @@ const FilterForm = ({
           onChange={(e) => setPageFilter(e.target.value)}
         >
           <option value="">None</option>
-          {filterOptions.pageOptions.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
+          {availablePages.length > 0
+            ? availablePages.map((page, index) => (
+                <option key={index} value={page}>
+                  {page}
+                </option>
+              ))
+            : filterOptions.pageOptions.map((option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              ))}
         </select>
       </label>
       <label>

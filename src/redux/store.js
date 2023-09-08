@@ -1,9 +1,13 @@
+// store.js
+
 import { configureStore } from "@reduxjs/toolkit";
-import csvDataReducer from "./csvDataSlice"; // Assurez-vous que le chemin d'importation est correct
+import csvDataReducer from "./csvDataSlice";
+import filterReducer from "./filterSlice";
 
 const store = configureStore({
   reducer: {
     csvData: csvDataReducer,
+    filter: filterReducer,
   },
 });
 
