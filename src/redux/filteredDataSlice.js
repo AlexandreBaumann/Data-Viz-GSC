@@ -1,10 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const selectAllData = (state) => state.csvData;
 
 const initialState = {
-  data: selectAllData,
+  data: [selectAllData],
 };
+
+// Thunk pour applyFilters
+export const applyFilters = createAsyncThunk(
+  "filteredData/applyFilters",
+  async (_, { dispatch, getState }) => {
+    const globalState = getState();
+    dispatch(setFilters(globalState));
+  }
+);
 
 const filteredDataSlice = createSlice({
   name: "filteredData",
@@ -13,8 +22,7 @@ const filteredDataSlice = createSlice({
     setData: (state, action) => {
       state.data = action.payload;
     },
-    applyFilters: (state) => {
-      // Extract filters from state
+    setFilters: (state, action) => {
       const {
         pageFilter,
         queryFilter,
@@ -22,10 +30,9 @@ const filteredDataSlice = createSlice({
         typeFilter,
         minQueryImpressions,
         minPageImpressions,
-      } = state.filter;
+      } = action.payload.filter;
 
-      // Apply the filters to the data
-      let filteredData = selectAllData(state);
+      let filteredData = selectAllData(action.payload);
 
       if (queryFilter) {
         filteredData = filteredData.filter((row) => row.Query === queryFilter);
@@ -53,5 +60,5 @@ const filteredDataSlice = createSlice({
   },
 });
 
-export const { setData, applyFilters } = filteredDataSlice.actions;
+export const { setData, setFilters } = filteredDataSlice.actions;
 export default filteredDataSlice.reducer;

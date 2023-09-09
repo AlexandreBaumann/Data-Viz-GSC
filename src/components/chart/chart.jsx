@@ -4,13 +4,14 @@ import prepareData from "./ChartDataPreparer";
 import formatData from "./ChartDataFormatter";
 import options from "./ChartOptions";
 import { useSelector } from "react-redux";
+import "chart.js/auto";
 
 const ChartComponent = () => {
   const [chartData, setChartData] = useState(null);
   const filteredData = useSelector((state) => state.filteredData);
 
   useEffect(() => {
-    const preparedData = prepareData(filteredData);
+    const preparedData = prepareData(filteredData.data);
     const formattedData = formatData(preparedData);
     setChartData(formattedData);
   }, [filteredData]);
