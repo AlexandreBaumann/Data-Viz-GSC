@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import fetchCsvData from "../CsvDataFetcher";
+import fetchCsvData from "./CsvDataFetcher";
 
 export const fetchCsv = createAsyncThunk("csvData/fetchCsv", async () => {
   const csvData = await fetchCsvData();

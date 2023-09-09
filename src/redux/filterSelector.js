@@ -12,50 +12,109 @@ const selectMinQueryImpressions = (state) => state.filter.minQueryImpressions;
 const selectMinPageImpressions = (state) => state.filter.minPageImpressions;
 const selectCategoryFilter = (state) => state.filter.categoryFilter;
 
-// Sélecteur pour obtenir les requêtes basées sur le filtre de page
+// Additional selectors for the type filter
+const selectTypeFilter = (state) => state.filter.typeFilter;
+
+// Updated selector for category options
+export const categoriesOptions = createSelector(
+  [selectAllData, selectQueryFilter, selectPageFilter, selectTypeFilter],
+  (data, queryFilter, pageFilter, typeFilter) => {
+    // Filter based on the query filter
+    if (queryFilter) {
+      data = data.filter((row) => row.Query === queryFilter);
+    }
+
+    // Filter based on the page filter
+    if (pageFilter) {
+      data = data.filter((row) => row.Page === pageFilter);
+    }
+
+    // Filter based on the type filter
+    if (typeFilter) {
+      data = data.filter((row) => row.Type === typeFilter);
+    }
+
+    return [...new Set(data.map((row) => row.Cat1))];
+  }
+);
+
+// Updated selector for type options
+export const typeOptions = createSelector(
+  [selectAllData, selectQueryFilter, selectPageFilter, selectCategoryFilter],
+  (data, queryFilter, pageFilter, categoryFilter) => {
+    // Filter based on the query filter
+    if (queryFilter) {
+      data = data.filter((row) => row.Query === queryFilter);
+    }
+
+    // Filter based on the page filter
+    if (pageFilter) {
+      data = data.filter((row) => row.Page === pageFilter);
+    }
+
+    // Filter based on the category filter
+    if (categoryFilter) {
+      data = data.filter((row) => row.Cat1 === categoryFilter);
+    }
+
+    return [...new Set(data.map((row) => row.Type))];
+  }
+);
+
+// Updated selector for queries options
 export const queriesOptions = createSelector(
-  [selectAllData, selectPageFilter, selectMinQueryImpressions],
-  (data, pageFilter, minImpressions) => {
-    if (!pageFilter) return [...new Set(data.map((row) => row.Query))];
+  [
+    selectAllData,
+    selectPageFilter,
+    selectCategoryFilter,
+    selectTypeFilter,
+    selectMinQueryImpressions,
+  ],
+  (data, pageFilter, categoryFilter, typeFilter, minImpressions) => {
+    if (pageFilter) {
+      data = data.filter((row) => row.Page === pageFilter);
+    }
+    if (categoryFilter) {
+      data = data.filter((row) => row.Cat1 === categoryFilter);
+    }
+    if (typeFilter) {
+      data = data.filter((row) => row.Type === typeFilter);
+    }
     return [
       ...new Set(
         data
-          .filter(
-            (row) =>
-              row.Page === pageFilter && row.Impressions >= minImpressions
-          )
+          .filter((row) => row.Impressions >= minImpressions)
           .map((row) => row.Query)
       ),
     ];
   }
 );
 
+// Updated selector for pages options
 export const pagesOptions = createSelector(
-  [selectAllData, selectQueryFilter, selectMinPageImpressions],
-  (data, queryFilter, minImpressions) => {
-    if (!queryFilter) return [...new Set(data.map((row) => row.Page))];
-    return [
-      ...new Set(
-        data
-          .filter(
-            (row) =>
-              row.Query === queryFilter && row.Impressions >= minImpressions
-          )
-          .map((row) => row.Page)
-      ),
-    ];
-  }
-);
-// Selector to get category options based on the selected query and page filters
-export const categoryOptions = createSelector(
-  [selectAllData, selectQueryFilter, selectPageFilter],
-  (data, queryFilter, pageFilter) => {
+  [
+    selectAllData,
+    selectQueryFilter,
+    selectCategoryFilter,
+    selectTypeFilter,
+    selectMinPageImpressions,
+  ],
+  (data, queryFilter, categoryFilter, typeFilter, minImpressions) => {
     if (queryFilter) {
       data = data.filter((row) => row.Query === queryFilter);
     }
-    if (pageFilter) {
-      data = data.filter((row) => row.Page === pageFilter);
+    if (categoryFilter) {
+      data = data.filter((row) => row.Cat1 === categoryFilter);
     }
-    return [...new Set(data.map((row) => row.Cat1))];
+    if (typeFilter) {
+      data = data.filter((row) => row.Type === typeFilter);
+    }
+    return [
+      ...new Set(
+        data
+          .filter((row) => row.Impressions >= minImpressions)
+          .map((row) => row.Page)
+      ),
+    ];
   }
 );
