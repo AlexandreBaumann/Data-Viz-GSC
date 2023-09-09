@@ -1,4 +1,4 @@
-function prepareData(csvData) {
+function prepareData(filteredData) {
   const clicksPerWeek = {};
   const impressionsPerWeek = {};
   const positionPerWeek = {};
@@ -6,7 +6,7 @@ function prepareData(csvData) {
   const categories = {};
   const types = {};
 
-  csvData.forEach((row) => {
+  filteredData.forEach((row) => {
     const week = parseInt(row.Week, 10);
     const clicks = parseFloat(row.Clicks);
     const impressions = parseFloat(row.Impressions);

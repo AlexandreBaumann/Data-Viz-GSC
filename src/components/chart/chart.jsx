@@ -7,13 +7,13 @@ import { useSelector } from "react-redux";
 
 const ChartComponent = () => {
   const [chartData, setChartData] = useState(null);
-  const reduxFilteredData = useSelector((state) => state.csvData);
+  const filteredData = useSelector((state) => state.filteredData);
 
   useEffect(() => {
-    const preparedData = prepareData(reduxFilteredData);
+    const preparedData = prepareData(filteredData);
     const formattedData = formatData(preparedData);
     setChartData(formattedData);
-  }, [reduxData]);
+  }, [filteredData]);
 
   if (!chartData) {
     return <div>Loading...</div>;

@@ -16,9 +16,13 @@ import {
   categoriesOptions,
   typeOptions,
 } from "../redux/filterSelector";
+import { applyFilters } from "../redux/filteredDataSlice";
 
 const FilterForm = () => {
   const dispatch = useDispatch();
+  const handleFilterButtonClick = () => {
+    dispatch(applyFilters());
+  };
 
   const availableQueries = useSelector(queriesOptions);
   const availablePages = useSelector(pagesOptions);
@@ -136,6 +140,7 @@ const FilterForm = () => {
           />
         </label>
       </div>
+      <button onClick={handleFilterButtonClick}>Appliquer les filtres</button>
     </div>
   );
 };

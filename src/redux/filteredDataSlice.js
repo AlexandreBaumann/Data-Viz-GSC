@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Initial state
+const selectAllData = (state) => state.csvData;
+
 const initialState = {
-  data: [], // This will hold the filtered data
+  data: selectAllData,
 };
 
 const filteredDataSlice = createSlice({
@@ -12,13 +13,42 @@ const filteredDataSlice = createSlice({
     setData: (state, action) => {
       state.data = action.payload;
     },
-    applyFilters: (state, action) => {
-      // Logic to filter the data based on the applied filters
-      // For now, I'm adding a placeholder. The actual logic will depend on the filter criteria and data structure
-      state.data = state.data.filter((item) => {
-        // Filtering logic goes here
-        return true; // Placeholder
-      });
+    applyFilters: (state) => {
+      // Extract filters from state
+      const {
+        pageFilter,
+        queryFilter,
+        categoryFilter,
+        typeFilter,
+        minQueryImpressions,
+        minPageImpressions,
+      } = state.filter;
+
+      // Apply the filters to the data
+      let filteredData = selectAllData(state);
+
+      if (queryFilter) {
+        filteredData = filteredData.filter((row) => row.Query === queryFilter);
+      }
+      if (pageFilter) {
+        filteredData = filteredData.filter((row) => row.Page === pageFilter);
+      }
+      if (typeFilter) {
+        filteredData = filteredData.filter((row) => row.Type === typeFilter);
+      }
+      if (categoryFilter) {
+        filteredData = filteredData.filter(
+          (row) => row.Cat1 === categoryFilter
+        );
+      }
+      filteredData = filteredData.filter(
+        (row) => row.Impressions >= minQueryImpressions
+      );
+      filteredData = filteredData.filter(
+        (row) => row.Impressions >= minPageImpressions
+      );
+
+      state.data = filteredData;
     },
   },
 });
