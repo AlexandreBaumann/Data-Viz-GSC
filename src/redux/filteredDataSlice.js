@@ -1,9 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const selectAllData = (state) => state.csvData;
-
 const initialState = {
-  data: [selectAllData],
+  data: [], // Assurez-vous que data est initialisé comme un tableau vide
 };
 
 // Thunk pour applyFilters
@@ -20,7 +18,7 @@ const filteredDataSlice = createSlice({
   initialState,
   reducers: {
     setData: (state, action) => {
-      state.data = action.payload;
+      state.data = action.payload; // Ici, nous mettons à jour state.data
     },
     setFilters: (state, action) => {
       const {
@@ -30,9 +28,11 @@ const filteredDataSlice = createSlice({
         typeFilter,
         minQueryImpressions,
         minPageImpressions,
+        startWeek,
+        endWeek,
       } = action.payload.filter;
 
-      let filteredData = selectAllData(action.payload);
+      let filteredData = state.data;
 
       if (queryFilter) {
         filteredData = filteredData.filter((row) => row.Query === queryFilter);
@@ -54,6 +54,12 @@ const filteredDataSlice = createSlice({
       filteredData = filteredData.filter(
         (row) => row.Impressions >= minPageImpressions
       );
+      if (startWeek && endWeek) {
+        filteredData = filteredData.filter(
+          (row) =>
+            parseInt(row.Week) >= startWeek && parseInt(row.Week) <= endWeek
+        );
+      }
 
       state.data = filteredData;
     },

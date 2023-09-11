@@ -1,4 +1,5 @@
 import React from "react";
+import style from "./filterform.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPageFilter,
@@ -42,9 +43,18 @@ const FilterForm = () => {
   const startWeek = useSelector((state) => state.filter.startWeek);
   const endWeek = useSelector((state) => state.filter.endWeek);
 
+  const handleResetButtonClick = () => {
+    dispatch(setPageFilter(""));
+    dispatch(setQueryFilter(""));
+    dispatch(setCategoryFilter(""));
+    dispatch(setTypeFilter(""));
+    dispatch(setMinQueryImpressions(0));
+    dispatch(setMinPageImpressions(0));
+  };
+
   return (
-    <div className="filtres">
-      <div className="requete">
+    <div className={style.filtres}>
+      <div className={style.requete}>
         <label>
           Query:
           <select
@@ -74,7 +84,7 @@ const FilterForm = () => {
           </select>
         </label>
       </div>
-      <div className="categorie">
+      <div className={style.categorie}>
         <label>
           Category:
           <select
@@ -104,7 +114,7 @@ const FilterForm = () => {
           </select>
         </label>
       </div>
-      <div className="impressions">
+      <div className={style.impressions}>
         <label>
           Impressions min. (Query):
           <input
@@ -122,7 +132,7 @@ const FilterForm = () => {
           />
         </label>
       </div>
-      <div className="semaine">
+      <div className={style.semaine}>
         <label>
           Start Week:
           <input
@@ -140,7 +150,23 @@ const FilterForm = () => {
           />
         </label>
       </div>
-      <button onClick={handleFilterButtonClick}>Appliquer les filtres</button>
+      <div className={style.buttonDiv}>
+        <button
+          className={style.applyButton}
+          type="button"
+          onClick={handleFilterButtonClick}
+        >
+          Apply filters
+        </button>
+
+        <button
+          className={style.resetButton}
+          type="button"
+          onClick={handleResetButtonClick}
+        >
+          Reset filters
+        </button>
+      </div>
     </div>
   );
 };
