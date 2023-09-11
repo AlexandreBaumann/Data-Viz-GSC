@@ -9,12 +9,13 @@ import "chart.js/auto";
 const ChartComponent = () => {
   const [chartData, setChartData] = useState(null);
   const filteredData = useSelector((state) => state.filteredData);
-
+  const startWeek = useSelector((state) => state.filter.startWeek);
+  const endWeek = useSelector((state) => state.filter.endWeek);
   useEffect(() => {
-    const preparedData = prepareData(filteredData.data);
+    const preparedData = prepareData(filteredData.data, startWeek, endWeek);
     const formattedData = formatData(preparedData);
     setChartData(formattedData);
-  }, [filteredData]);
+  }, [filteredData, startWeek, endWeek]);
 
   if (!chartData) {
     return <div>Loading...</div>;

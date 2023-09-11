@@ -1,4 +1,4 @@
-function prepareData(filteredData) {
+function prepareData(filteredData, startWeek, endWeek) {
   const clicksPerWeek = {};
   const impressionsPerWeek = {};
   const positionPerWeek = {};
@@ -43,7 +43,10 @@ function prepareData(filteredData) {
     }
   });
 
-  const weeks = Array.from({ length: 52 }, (_, i) => i + 1);
+  const weeks = Array.from(
+    { length: endWeek - startWeek + 1 },
+    (_, i) => i + startWeek
+  );
   const clicks = weeks.map((week) => clicksPerWeek[week] ?? 0);
   const impressions = weeks.map((week) => impressionsPerWeek[week] ?? 0);
   const positions = weeks.map(
