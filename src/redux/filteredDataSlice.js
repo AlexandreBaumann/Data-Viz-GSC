@@ -18,7 +18,7 @@ const filteredDataSlice = createSlice({
   initialState,
   reducers: {
     setData: (state, action) => {
-      state.data = action.payload; // Ici, nous mettons à jour state.data
+      state.data = action.payload;
     },
     setFilters: (state, action) => {
       const {
@@ -32,7 +32,7 @@ const filteredDataSlice = createSlice({
         endWeek,
       } = action.payload.filter;
 
-      let filteredData = state.data;
+      let filteredData = [...action.payload.csvData];
 
       if (queryFilter) {
         filteredData = filteredData.filter((row) => row.Query === queryFilter);

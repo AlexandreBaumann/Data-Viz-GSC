@@ -9,7 +9,6 @@ const initialState = {
   minPageImpressions: 0,
   startWeek: 1,
   endWeek: 52,
-  filteredData: [],
 };
 
 const filterSlice = createSlice({

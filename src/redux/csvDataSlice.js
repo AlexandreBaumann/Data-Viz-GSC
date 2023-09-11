@@ -16,7 +16,7 @@ const csvDataSlice = createSlice({
   },
   extraReducers: {
     [fetchCsv.fulfilled]: (state, action) => {
-      return action.payload;
+      return [...action.payload];
     },
   },
 });
