@@ -118,3 +118,10 @@ export const pagesOptions = createSelector(
     ];
   }
 );
+
+export const selectConsolidatedData = (state) => {
+  return {
+    byQuery: state.consolidatedData.byQuery,
+    byPage: state.consolidatedData.byPage,
+  };
+};

@@ -1,4 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { consolidateByQuery, consolidateByPage } from "./consolidationLogic"; // Nouveau
+import {
+  setConsolidatedDataByQuery,
+  setConsolidatedDataByPage,
+} from "./consolidatedDataSlice"; // Nouveau
 
 const initialState = {
   data: [], // Assurez-vous que data est initialisé comme un tableau vide
@@ -10,6 +15,15 @@ export const applyFilters = createAsyncThunk(
   async (_, { dispatch, getState }) => {
     const globalState = getState();
     dispatch(setFilters(globalState));
+
+    const filteredData = globalState.filteredData.data;
+    console.log(filteredData);
+
+    const consolidatedDataByQuery = consolidateByQuery(filteredData);
+    const consolidatedDataByPage = consolidateByPage(filteredData);
+
+    dispatch(setConsolidatedDataByQuery(consolidatedDataByQuery));
+    dispatch(setConsolidatedDataByPage(consolidatedDataByPage));
   }
 );
 
