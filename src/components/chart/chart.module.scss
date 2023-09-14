@@ -1,6 +1,21 @@
 .dataviz {
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 1400px;
   .chart {
+    width: 60%;
   }
   .table {
+    max-height: 400px;
+    overflow-y: auto;
+    font-size: 12px;
+    .sortButton {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .key {
+      max-width: 400px;
+      text-align: left;
+    }
   }
 }
