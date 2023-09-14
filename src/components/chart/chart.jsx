@@ -54,7 +54,7 @@ const ChartComponent = () => {
     const formattedData = formatData(preparedData);
     setChartData(formattedData);
 
-    console.log(filteredData.data);
+    // console.log(filteredData.data);
 
     const tableDataPages = consolidateDataByPage(filteredData.data);
     const tableDataQuery = consolidateDataByQuery(filteredData.data);
