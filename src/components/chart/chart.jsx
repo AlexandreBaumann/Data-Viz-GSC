@@ -84,7 +84,12 @@ const ChartComponent = () => {
   ////////////////////////////RENDU////////////////////////////
 
   if (!chartData) {
-    return <div>Loading...</div>;
+    return (
+      <div className={style.loader}>
+        <div className={style.loadingSpinner}></div>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   return (
