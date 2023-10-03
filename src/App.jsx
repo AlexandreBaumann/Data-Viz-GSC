@@ -1,4 +1,3 @@
-import React from "react";
 import FilterForm from "./components/filterform";
 import ChartComponent from "./components/chart/chart";
 

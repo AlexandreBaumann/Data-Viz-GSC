@@ -1,4 +1,3 @@
-import React from "react";
 import style from "./filterform.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,8 +11,8 @@ import {
   setEndWeek,
 } from "../redux/filterSlice";
 import {
-  queriesOptions,
   pagesOptions,
+  queriesOptions,
   categoriesOptions,
   typeOptions,
 } from "../redux/filterSelector";

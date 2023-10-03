@@ -1,9 +1,8 @@
 export const consolidateDataByQuery = (data) => {
-  const consolidated = {};
-  data.forEach((row) => {
+  const consolidated = data.reduce((acc, row) => {
     const key = row.Query;
-    if (!consolidated[key]) {
-      consolidated[key] = {
+    if (!acc[key]) {
+      acc[key] = {
         Query: row.Query,
         Clicks: 0,
         Impressions: 0,
@@ -11,11 +10,12 @@ export const consolidateDataByQuery = (data) => {
         Count: 0,
       };
     }
-    consolidated[key].Clicks += parseInt(row.Clicks, 10);
-    consolidated[key].Impressions += parseInt(row.Impressions, 10);
-    consolidated[key].TotalPosition += parseFloat(row.Position);
-    consolidated[key].Count += 1;
-  });
+    acc[key].Clicks += parseInt(row.Clicks, 10);
+    acc[key].Impressions += parseInt(row.Impressions, 10);
+    acc[key].TotalPosition += parseFloat(row.Position);
+    acc[key].Count += 1;
+    return acc;
+  }, {});
 
   Object.keys(consolidated).forEach((key) => {
     consolidated[key].AveragePosition = Math.floor(
@@ -29,11 +29,10 @@ export const consolidateDataByQuery = (data) => {
 };
 
 export const consolidateDataByPage = (data) => {
-  const consolidated = {};
-  data.forEach((row) => {
+  const consolidated = data.reduce((acc, row) => {
     const key = row.Page;
-    if (!consolidated[key]) {
-      consolidated[key] = {
+    if (!acc[key]) {
+      acc[key] = {
         Page: row.Page,
         Clicks: 0,
         Impressions: 0,
@@ -41,11 +40,12 @@ export const consolidateDataByPage = (data) => {
         Count: 0,
       };
     }
-    consolidated[key].Clicks += parseInt(row.Clicks, 10);
-    consolidated[key].Impressions += parseInt(row.Impressions, 10);
-    consolidated[key].TotalPosition += parseFloat(row.Position);
-    consolidated[key].Count += 1;
-  });
+    acc[key].Clicks += parseInt(row.Clicks, 10);
+    acc[key].Impressions += parseInt(row.Impressions, 10);
+    acc[key].TotalPosition += parseFloat(row.Position);
+    acc[key].Count += 1;
+    return acc;
+  }, {});
 
   Object.keys(consolidated).forEach((key) => {
     consolidated[key].AveragePosition = Math.floor(

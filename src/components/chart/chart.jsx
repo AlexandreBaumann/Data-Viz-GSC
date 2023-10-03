@@ -39,8 +39,16 @@ const ChartComponent = () => {
 
   const onSort = (columnName) => {
     let direction = "asc";
+    if (columnName === "Clicks" || columnName === "Impressions") {
+      direction = "desc"; // Par défaut en ordre décroissant pour "Clicks" et "Impressions"
+    }
     if (sortConfig.key === columnName && sortConfig.direction === "asc") {
       direction = "desc";
+    } else if (
+      sortConfig.key === columnName &&
+      sortConfig.direction === "desc"
+    ) {
+      direction = "asc";
     }
     setSortConfig({ key: columnName, direction });
   };
@@ -53,8 +61,6 @@ const ChartComponent = () => {
     const preparedData = prepareData(filteredData.data, startWeek, endWeek);
     const formattedData = formatData(preparedData);
     setChartData(formattedData);
-
-    // console.log(filteredData.data);
 
     const tableDataPages = consolidateDataByPage(filteredData.data);
     const tableDataQuery = consolidateDataByQuery(filteredData.data);
